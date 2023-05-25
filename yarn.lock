@@ -11796,6 +11796,7 @@ __metadata:
   dependencies:
     husky: ^8.0.1
     lint-staged: ^13.0.3
+    theme-change: ^2.5.0
   languageName: unknown
   linkType: soft
 
@@ -12619,6 +12620,13 @@ __metadata:
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
   checksum: b6937a38c80c7f84d9c11dd75e49d5c44f71d95e810a3250bd1f1797fc7117c57698204adf676b71497acc205d769d65c16ae8fa10afad832ae1322630aef10a
+  languageName: node
+  linkType: hard
+
+"theme-change@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "theme-change@npm:2.5.0"
+  checksum: a57e50a8f7cb0390c752c9f3b44aa38bdb37ad72cfed1770a9cad3f718b620eec7e2a18abf6706730eb76a55f67ec813c17192dbe4943b03371c1e13e589ec15
   languageName: node
   linkType: hard
 

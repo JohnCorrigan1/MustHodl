@@ -5,7 +5,7 @@ const contracts = {
       chainId: "31337",
       contracts: {
         YourContract: {
-          address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+          address: "0x9A676e781A523b5d0C0e43731313A708CB607508",
           abi: [
             {
               inputs: [],
@@ -132,6 +132,75 @@ const contracts = {
               type: "function",
             },
             {
+              inputs: [],
+              name: "getAccruedFees",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "_staker",
+                  type: "address",
+                },
+              ],
+              name: "getClaimableRewards",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "getLastDistribtuionTime",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "_staker",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "_index",
+                  type: "uint256",
+                },
+              ],
+              name: "getLockDuration",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
               inputs: [
                 {
                   internalType: "address",
@@ -158,10 +227,65 @@ const contracts = {
                       name: "fakeEth",
                       type: "uint256",
                     },
+                    {
+                      internalType: "uint256",
+                      name: "lockDuration",
+                      type: "uint256",
+                    },
                   ],
                   internalType: "struct YourContract.Stake[]",
                   name: "",
                   type: "tuple[]",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "getTotalFakeEth",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "getTotalStakedAmount",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "_staker",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "_index",
+                  type: "uint256",
+                },
+              ],
+              name: "getUnlockTime",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
                 },
               ],
               stateMutability: "view",

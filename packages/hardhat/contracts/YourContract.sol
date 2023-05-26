@@ -7,6 +7,7 @@ contract YourContract {
     uint256 amount;
     uint256 unlockTime;
     uint256 fakeEth;
+    uint256 lockDuration;
   }
 
   struct Staker {
@@ -39,7 +40,7 @@ contract YourContract {
     //change 120 to amount of time for a max lock period
     uint256 fakeEth = (msg.value * _unlockTime) / 120;
     totalFakeEth = totalFakeEth + fakeEth;
-    Stakers[msg.sender].stakes.push(Stake(msg.value, block.timestamp + _unlockTime, fakeEth));
+    Stakers[msg.sender].stakes.push(Stake(msg.value, block.timestamp + _unlockTime, fakeEth, _unlockTime));
     totalStakedAmount = totalStakedAmount + msg.value;
 
     emit StakeEvent(msg.sender, msg.value, block.timestamp + _unlockTime);
@@ -85,7 +86,7 @@ contract YourContract {
     lastDistributionTime = block.timestamp;
     //loop through all stakes and their stakes
     //calculate their share of the fees
-
+    //need to figure out a better way to do this super inefficient
     for (uint256 i = 0; i < allStakers.length; i++) {
       uint256 _totalFakeEth;
       for (uint256 j = 0; j < Stakers[allStakers[i]].stakes.length; j++) {
@@ -109,6 +110,34 @@ contract YourContract {
 
   function getStakes(address _staker) public view returns (Stake[] memory) {
     return Stakers[_staker].stakes;
+  }
+
+  function getAccruedFees() public view returns (uint256) {
+    return accuredFees;
+  }
+
+  function getClaimableRewards(address _staker) public view returns (uint256) {
+    return Stakers[_staker].ClaimableRewards;
+  }
+
+  function getTotalStakedAmount() public view returns (uint256) {
+    return totalStakedAmount;
+  }
+
+  function getTotalFakeEth() public view returns (uint256) {
+    return totalFakeEth;
+  }
+
+  function getLastDistribtuionTime() public view returns (uint256) {
+    return lastDistributionTime;
+  }
+
+  function getLockDuration(address _staker, uint256 _index) public view returns (uint256) {
+    return Stakers[_staker].stakes[_index].lockDuration;
+  }
+
+  function getUnlockTime(address _staker, uint256 _index) public view returns (uint256) {
+    return Stakers[_staker].stakes[_index].unlockTime;
   }
 
   // to support receiving ETH by default

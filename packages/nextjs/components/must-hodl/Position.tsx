@@ -1,39 +1,40 @@
-import abi from "../../lib/abi";
-import { useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
+import { useAccount } from "wagmi";
+import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 const Position: React.FC<{ eth: string; veEth: string; index: any }> = props => {
-  const isConnected = useAccount();
-
-  const { config } = usePrepareContractWrite({
-    address: "0x5E8bF6F4f0d1816280a606d67E405B70882A3b32",
-    abi: abi,
+  const { address } = useAccount();
+  const { writeAsync } = useScaffoldContractWrite({
+    contractName: "YourContract",
     functionName: "unstake",
     args: [props.index],
-    onError(error) {
-      console.log("Error", error);
-    },
   });
-  //   const { write: unstake, isSuccess: isUnstakeStarted, data: unstakeData } = useContractWrite(config);
-  const { write: unstake } = useContractWrite(config);
 
-  //   const { isSuccess: txSuccess } = useWaitForTransaction({
-  // hash: unstakeData?.hash,
-  //   });
+  const { data: lockDuration } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getLockDuration",
+    args: [address, props.index],
+  });
 
-  const handleUnstake = () => {
-    if (!isConnected) return;
-    //@ts-ignore
-    unstake?.(props.index);
-  };
+  const { data: unlockTime } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getUnlockTime",
+    args: [address, props.index],
+  });
+
+  if (lockDuration) console.log(parseInt(lockDuration.toString()), "minutes");
+  if (unlockTime) console.log(new Date(parseInt(unlockTime.toString()) * 1000));
 
   return (
     <div className="shadow-xl">
       <ul className="flex font-bold justify-between p-4 bg-primary-focus text-primary-content rounded-lg items-center">
-        <li className="">Locked Eth: {props.eth}</li>
-        <li>Locked VeEth: {props.veEth}</li>
-        <li>Lock duration: 120days</li>
+        <li className="">Eth: {props.eth}</li>
+        <li>VeEth: {props.veEth}</li>
+        <li>Lock: {lockDuration ? lockDuration.toString() : "0"}s</li>
+        <li>
+          Unlock: {unlockTime ? new Date(parseInt(unlockTime.toString()) * 1000).toLocaleDateString("en-us") : "0"}
+        </li>
         <li
-          onClick={handleUnstake}
+          onClick={writeAsync}
           className=" shadow-lg bg-secondary p-3 rounded-lg hover:scale-110 active:scale-95 cursor-pointer duration-150 ease-in-out"
         >
           Unstake

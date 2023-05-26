@@ -1,38 +1,21 @@
-import { useEffect, useState } from "react";
-import abi from "../../lib/abi";
 import { ethers } from "ethers";
+import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
 const Stats: React.FC = () => {
-  const [contract, setContract] = useState<any>(null);
-  const [ethStaked, setEthStaked] = useState("0");
-  const [veEth, setVeEth] = useState("0");
-  const [fees, setFees] = useState("0");
+  const { data: lockedEth } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getTotalStakedAmount",
+  });
 
-  const infuraId = process.env.NEXT_PUBLIC_INFURA_ID;
+  const { data: fakeEth } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getTotalFakeEth",
+  });
 
-  useEffect(() => {
-    const getContract = async () => {
-      const provider = new ethers.providers.JsonRpcProvider(`https://sepolia.infura.io/v3/${infuraId}`);
-      const contract = new ethers.Contract("0x5E8bF6F4f0d1816280a606d67E405B70882A3b32", abi, provider);
-      setContract(contract);
-    };
-    getContract();
-  }, []);
-
-  useEffect(() => {
-    if (!contract) {
-      return;
-    }
-    getData();
-  }, [contract]);
-
-  const getData = async () => {
-    setEthStaked(ethers.utils.formatEther(await contract.totalStakedAmount()));
-    setVeEth(parseInt(ethers.utils.formatEther(await contract.totalFakeEth())).toFixed(2));
-    setFees(parseFloat(ethers.utils.formatEther(await contract.accuredFees())).toFixed(2));
-  };
-
-  if (!contract) return <div>Loading...</div>;
+  const { data: accruedFees } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getAccruedFees",
+  });
 
   return (
     <div className="stats shadow">
@@ -53,7 +36,9 @@ const Stats: React.FC = () => {
           </svg>
         </div>
         <div className="stat-title">Total Locked Eth</div>
-        <div className="stat-value text-primary">{ethStaked}</div>
+        <div className="stat-value text-primary">
+          {lockedEth ? parseFloat(ethers.utils.formatEther(lockedEth)).toFixed(2) : "0"}
+        </div>
       </div>
 
       <div className="stat">
@@ -68,13 +53,15 @@ const Stats: React.FC = () => {
           </svg>
         </div>
         <div className="stat-title">Locked veEth</div>
-        <div className="stat-value text-secondary">{veEth}</div>
+        <div className="stat-value text-secondary">
+          {fakeEth ? parseFloat(ethers.utils.formatEther(fakeEth)).toFixed(2) : "0"}
+        </div>
       </div>
 
       <div className="stat">
         <div className="stat-figure text-secondary"></div>
         <div className="stat-title">This weeks Fees</div>
-        <div className="stat-value">{fees}</div>
+        <div className="stat-value">{accruedFees ? parseFloat(ethers.utils.formatEther(accruedFees)) : "0"}</div>
       </div>
     </div>
   );

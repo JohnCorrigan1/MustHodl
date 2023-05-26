@@ -1,39 +1,18 @@
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import Position from "../components/must-hodl/Position";
-import abi from "../lib/abi";
 import { ethers } from "ethers";
 import { NextPage } from "next";
+import { useAccount } from "wagmi";
+import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
 const Positions: NextPage = () => {
-  const [contract, setContract] = useState<any>(null);
-  const [positions, setPositions] = useState<any>([]);
+  const { address } = useAccount();
 
-  const infuraId = process.env.NEXT_PUBLIC_INFURA_ID;
-
-  useEffect(() => {
-    const getContract = async () => {
-      const provider = new ethers.providers.JsonRpcProvider(`https://sepolia.infura.io/v3/${infuraId}`);
-      const contract = new ethers.Contract("0x5E8bF6F4f0d1816280a606d67E405B70882A3b32", abi, provider);
-      setContract(contract);
-    };
-    getContract();
-  }, []);
-
-  useEffect(() => {
-    if (!contract) {
-      return;
-    }
-
-    getData();
-  }, [contract]);
-
-  const getData = async () => {
-    const user = await window.ethereum?.request({ method: "eth_accounts" });
-    if (user) {
-      setPositions(await contract.getStakes(user[0]));
-    }
-  };
+  const { data: stakes } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getStakes",
+    args: [address],
+  });
 
   return (
     <div className="app">
@@ -41,7 +20,7 @@ const Positions: NextPage = () => {
       <div className="flex justify-center items-center flex-col mt-16">
         <h1 className="text-3xl font-bold text-content">View and Unstake Positions</h1>
         <div className="flex flex-col p-10 w-2/3 staking rounded-xl border-2 border-primary-focus mt-10 gap-5">
-          {positions.length === 0 && (
+          {!stakes && (
             <div className="flex flex-col justify-center items-center gap-5 w-full">
               <h3 className="text-xl font-semibold">No positions found...</h3>
               <Link href="/mustHodl">
@@ -49,8 +28,7 @@ const Positions: NextPage = () => {
               </Link>
             </div>
           )}
-          {positions.map((position: any, index: number) => {
-            console.log(index);
+          {stakes?.map((position: any, index: number) => {
             return (
               <Position
                 eth={ethers.utils.formatEther(position.amount)}

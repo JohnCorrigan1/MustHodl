@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ThemeChanger from "./ThemeChanger";
+// import ThemeChanger from "./ThemeChanger";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Navbar: React.FC = () => {
@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
         </Link>
       </div>
       <div className="flex gap-10 items-center">
-        <ThemeChanger />
+        {/* <ThemeChanger /> */}
         <ConnectButton />
       </div>
     </div>

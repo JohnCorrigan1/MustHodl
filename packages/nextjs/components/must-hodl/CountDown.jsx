@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 const CountDown = () => {
-  // const [contract, setContract] = useState(null);
-  // const infuraId = process.env.NEXT_PUBLIC_INFURA_ID;
   const [isAvailable, setIsAvailable] = useState(false);
   const [countdown, setCountdown] = useState({
     days: 1,
@@ -20,6 +18,11 @@ const CountDown = () => {
   const { data: lastDistribution } = useScaffoldContractRead({
     contractName: "YourContract",
     functionName: "getLastDistribtuionTime",
+  });
+
+  const { data: accruedFees } = useScaffoldContractRead({
+    contractName: "YourContract",
+    functionName: "getAccruedFees",
   });
 
   const getDifference = lastDistribution => {
@@ -59,25 +62,9 @@ const CountDown = () => {
     });
   };
 
-  // useEffect(() => {
-  //   const getContract = async () => {
-  //     const provider = new ethers.providers.JsonRpcProvider(`https://sepolia.infura.io/v3/${infuraId}`);
-  //     const contract = new ethers.Contract("0x5E8bF6F4f0d1816280a606d67E405B70882A3b32", abi, provider);
-  //     setContract(contract);
-  //   };
-  //   getContract();
-  // }, []);
-
   useEffect(() => {
-    // if (!contract) return;
-    // const getLastDistribution = async () => {
-    // const lastDistribution = await contract.lastDistributionTime();
-
     if (!lastDistribution) return;
-
     getDifference(lastDistribution * 1000);
-    // };
-    // getLastDistribution();
   }, [lastDistribution]);
 
   useEffect(() => {
@@ -146,12 +133,17 @@ const CountDown = () => {
           </div>
         </div>
       )}
-      {isAvailable && (
+      {isAvailable && accruedFees > 0 && (
         <div className="w-full flex justify-center flex-col items-center p-5 ">
           <h1>Claim the bounty!</h1>
           <button className="btn btn-primary" disabled={!isAvailable} onClick={writeAsync}>
             Claim
           </button>
+        </div>
+      )}
+      {isAvailable && accruedFees <= 0 && (
+        <div className="w-full flex justify-center flex-col items-center p-5 ">
+          <h1>No fees to distribute</h1>
         </div>
       )}
     </div>

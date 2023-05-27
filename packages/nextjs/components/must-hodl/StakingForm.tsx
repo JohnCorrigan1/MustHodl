@@ -30,9 +30,10 @@ const StakingForm: React.FC<{
     setWillRecieve(((parseFloat(amount) * parseFloat(lockTime)) / 120).toFixed(2).toString());
     if (!totalFakeEth) return;
     setStakeShare(
-      ((parseFloat(amount) * parseFloat(lockTime)) / 120 / parseFloat(ethers.utils.formatEther(totalFakeEth))).toFixed(
-        4,
-      ),
+      (
+        parseFloat(ethers.utils.formatEther(totalFakeEth)) /
+        ((parseFloat(amount) * parseFloat(lockTime)) / 120 + parseFloat(ethers.utils.formatEther(totalFakeEth)))
+      ).toFixed(4),
     );
   }, [amount, lockTime, totalFakeEth]);
 
@@ -88,6 +89,7 @@ const StakingForm: React.FC<{
           Amount Eth
         </label>
         <input
+          max={1000000}
           value={amount}
           onChange={handleAmount}
           type="text"
@@ -101,7 +103,7 @@ const StakingForm: React.FC<{
       </div>
       <div className="flex flex-col mt-5 mb-5 p-5 rounded-lg items-center font-bold shadow-lg bg-accent bg-opacity-80 ">
         <h2>Will Recieve: {willRecieve} VeEth</h2>
-        <h2>Stakes Share: {(parseFloat(stakeShare) * 100).toFixed(2)}%</h2>
+        <h2>Stakes Share: {(100 - parseFloat(stakeShare) * 100).toFixed(2)}%</h2>
       </div>
       <button
         onClick={handleStake}

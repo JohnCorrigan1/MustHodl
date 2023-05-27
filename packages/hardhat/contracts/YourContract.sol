@@ -46,6 +46,10 @@ contract YourContract {
     emit StakeEvent(msg.sender, msg.value, block.timestamp + _unlockTime);
   }
 
+  function getAllStakersLength() public view returns (uint) {
+    return allStakers.length;
+  }
+
   function unstake(uint256 _index) public {
     require(Stakers[msg.sender].stakes.length > 0, "MustHodl: no stake found");
     require(_index < Stakers[msg.sender].stakes.length, "MustHodl: invalid index");
@@ -81,7 +85,7 @@ contract YourContract {
   }
 
   function distributeFees() public {
-    require(accuredFees > 0, "MustHodl: no fees to claim");
+    require(accuredFees > 0, "MustHodl: no fees to distribute");
     require(block.timestamp >= lastDistributionTime + 1 minutes, "MustHodl: distribution time not reached");
     lastDistributionTime = block.timestamp;
     //loop through all stakes and their stakes
@@ -138,6 +142,22 @@ contract YourContract {
 
   function getUnlockTime(address _staker, uint256 _index) public view returns (uint256) {
     return Stakers[_staker].stakes[_index].unlockTime;
+  }
+
+  function getUsersStakedEth(address _staker) public view returns (uint256) {
+    uint256 lockedEth;
+    for (uint i = 0; i < Stakers[_staker].stakes.length; i++) {
+      lockedEth += Stakers[_staker].stakes[i].amount;
+    }
+    return lockedEth;
+  }
+
+  function getUsersVeEth(address _staker) public view returns (uint256) {
+    uint256 veEth;
+    for (uint i = 0; i < Stakers[_staker].stakes.length; i++) {
+      veEth += Stakers[_staker].stakes[i].fakeEth;
+    }
+    return veEth;
   }
 
   // to support receiving ETH by default

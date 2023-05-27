@@ -21,9 +21,6 @@ const Position: React.FC<{ eth: string; veEth: string; index: any }> = props => 
     args: [address, props.index],
   });
 
-  if (lockDuration) console.log(parseInt(lockDuration.toString()), "minutes");
-  if (unlockTime) console.log(new Date(parseInt(unlockTime.toString()) * 1000));
-
   return (
     <div className="shadow-xl">
       <ul className="flex font-bold justify-between p-4 bg-primary-focus text-primary-content rounded-lg items-center">

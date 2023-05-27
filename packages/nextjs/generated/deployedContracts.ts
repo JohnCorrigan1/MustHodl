@@ -5,7 +5,7 @@ const contracts = {
       chainId: "31337",
       contracts: {
         YourContract: {
-          address: "0x9A676e781A523b5d0C0e43731313A708CB607508",
+          address: "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f",
           abi: [
             {
               inputs: [],
@@ -134,6 +134,19 @@ const contracts = {
             {
               inputs: [],
               name: "getAccruedFees",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "getAllStakersLength",
               outputs: [
                 {
                   internalType: "uint256",
@@ -281,6 +294,44 @@ const contracts = {
                 },
               ],
               name: "getUnlockTime",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "_staker",
+                  type: "address",
+                },
+              ],
+              name: "getUsersStakedEth",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "_staker",
+                  type: "address",
+                },
+              ],
+              name: "getUsersVeEth",
               outputs: [
                 {
                   internalType: "uint256",

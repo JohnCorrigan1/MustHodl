@@ -4,24 +4,24 @@ import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaf
 const CountDown = () => {
   const [isAvailable, setIsAvailable] = useState(false);
   const [countdown, setCountdown] = useState({
-    days: 1,
+    days: 0,
     hours: 0,
-    minutes: 0,
+    minutes: 1,
     seconds: 0,
   });
 
   const { writeAsync } = useScaffoldContractWrite({
-    contractName: "YourContract",
+    contractName: "MustHodl",
     functionName: "distributeFees",
   });
 
   const { data: lastDistribution } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "MustHodl",
     functionName: "getLastDistribtuionTime",
   });
 
   const { data: accruedFees } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "MustHodl",
     functionName: "getAccruedFees",
   });
 
@@ -30,8 +30,8 @@ const CountDown = () => {
     //7 days after last distribution
     // const target = new Date(lastDistribution + 7 * 24 * 60 * 60 * 1000);
 
-    //5minutes after last distribution
-    const target = new Date(lastDistribution + 5 * 60 * 1000);
+    //1minutes after last distribution
+    const target = new Date(lastDistribution + 60 * 1000);
 
     let diff = target.getTime() - now.getTime();
 

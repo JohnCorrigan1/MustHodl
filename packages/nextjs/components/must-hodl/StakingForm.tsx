@@ -47,7 +47,7 @@ const StakingForm: React.FC = () => {
     <div className=" p-5 rounded-lg shadow-lg">
       <div className="flex flex-col">
         <label htmlFor="lock" className="font-bold text-content">
-          Lock Time
+          Lock Time (seconds)
         </label>
         <input
           value={lockTime}

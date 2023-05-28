@@ -1,28 +1,22 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
-const StakingForm: React.FC<{
-  isConnected: boolean;
-  stakeModal: boolean;
-  setStakeModal: Dispatch<SetStateAction<boolean>>;
-  isLoading: boolean;
-  setIsLoading: Dispatch<SetStateAction<boolean>>;
-}> = props => {
+const StakingForm: React.FC = () => {
   const [lockTime, setLockTime] = useState<any>("1");
   const [amount, setAmount] = useState<any>("0");
   const [willRecieve, setWillRecieve] = useState("");
   const [stakeShare, setStakeShare] = useState("0");
 
-  const { writeAsync, isLoading } = useScaffoldContractWrite({
-    contractName: "YourContract",
+  const { writeAsync } = useScaffoldContractWrite({
+    contractName: "MustHodl",
     functionName: "stake",
     args: [lockTime.toString()],
     value: amount.toString(),
   });
 
   const { data: totalFakeEth } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "MustHodl",
     functionName: "getTotalFakeEth",
   });
 
@@ -48,22 +42,6 @@ const StakingForm: React.FC<{
   const handleAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value);
   };
-
-  const handleStake = () => {
-    if (lockTime === "" || amount <= 0) return;
-    if (!props.isConnected) return;
-    writeAsync();
-    props.setStakeModal(true);
-  };
-
-  useEffect(() => {
-    if (!isLoading) {
-      props.setIsLoading(false);
-    }
-    if (isLoading) {
-      props.setIsLoading(true);
-    }
-  }, [isLoading, props]);
 
   return (
     <div className=" p-5 rounded-lg shadow-lg">
@@ -106,7 +84,7 @@ const StakingForm: React.FC<{
         <h2>Stakes Share: {(100 - parseFloat(stakeShare) * 100).toFixed(2)}%</h2>
       </div>
       <button
-        onClick={handleStake}
+        onClick={writeAsync}
         className=" btn btn-primary bg-accent shadow-lg w-full hover:bg-accent-focus hover:scale-[1.02] bg-opacity-80 "
       >
         Stake

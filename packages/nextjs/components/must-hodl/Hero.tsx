@@ -25,7 +25,7 @@ const Hero: React.FC = () => {
         </div>
       </div>
       <div className="flex mt-auto items-center gap-5 btn btn-ghost">
-        <button className="font-bold text-lg text-secondary">Read More</button>
+        <button className="font-bold text-lg text-accent">Read More</button>
         <Image src="/assets/down.svg" width={40} height={40} className="" alt="down"></Image>
       </div>
     </div>

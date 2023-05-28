@@ -4,19 +4,19 @@ import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaf
 const Position: React.FC<{ eth: string; veEth: string; index: any }> = props => {
   const { address } = useAccount();
   const { writeAsync } = useScaffoldContractWrite({
-    contractName: "YourContract",
+    contractName: "MustHodl",
     functionName: "unstake",
     args: [props.index],
   });
 
   const { data: lockDuration } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "MustHodl",
     functionName: "getLockDuration",
     args: [address, props.index],
   });
 
   const { data: unlockTime } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "MustHodl",
     functionName: "getUnlockTime",
     args: [address, props.index],
   });

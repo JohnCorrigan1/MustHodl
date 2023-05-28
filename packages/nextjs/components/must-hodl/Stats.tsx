@@ -3,17 +3,17 @@ import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
 const Stats: React.FC = () => {
   const { data: lockedEth } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "MustHodl",
     functionName: "getTotalStakedAmount",
   });
 
   const { data: fakeEth } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "MustHodl",
     functionName: "getTotalFakeEth",
   });
 
   const { data: accruedFees } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "MustHodl",
     functionName: "getAccruedFees",
   });
 

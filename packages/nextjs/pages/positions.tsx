@@ -9,7 +9,7 @@ const Positions: NextPage = () => {
   const { address } = useAccount();
 
   const { data: stakes } = useScaffoldContractRead({
-    contractName: "YourContract",
+    contractName: "MustHodl",
     functionName: "getStakes",
     args: [address],
   });
